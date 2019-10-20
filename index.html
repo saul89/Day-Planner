@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Work Day Scheduler</title>
+  </head>
+
+  <body>
+    <header class="jumbotron">
+      <h1 class="display-3">Work Day Scheduler</h1>
+      <p class="lead">A simple calendar app for scheduling your work day</p>
+      <p id="currentDay" class="lead"></p>
+    </header>
+    <div class="container">
+      <!-- Timeblocks go here -->
+      <table style="margin: auto;">
+        <tr class="row time-block">
+          <td class="hour">9AM</td>
+          <td class="description" time="09"><textarea time="09"></textarea></td>
+          <td><button class="saveBtn btn" time="09"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">10AM</td>
+          <td class="description" time="10"><textarea time="10"></textarea></td>
+          <td><button class="saveBtn btn" time="10"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">11AM</td>
+          <td class="description" time="11"><textarea time="11"></textarea></td>
+          <td><button class="saveBtn btn" time="11"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">12PM</td>
+          <td class="description" time="12"><textarea time="12"></textarea></td>
+          <td><button class="saveBtn btn" time="12"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">1PM</td>
+          <td class="description" time="13"><textarea time="13"></textarea></td>
+          <td><button class="saveBtn btn" time="13"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">2PM</td>
+          <td class="description" time="14"><textarea time="14"></textarea></td>
+          <td><button class="saveBtn btn" time="14"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">3PM</td>
+          <td class="description" time="15"><textarea time="15"></textarea></td>
+          <td><button class="saveBtn btn" time="15"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">4PM</td>
+          <td class="description" time="16"><textarea time="16"></textarea></td>
+          <td><button class="saveBtn btn" time="16"></button></td>
+        </tr>
+        <tr class="row time-block">
+          <td class="hour">5PM</td>
+          <td class="description" time="17"><textarea time="17"></textarea></td>
+          <td><button class="saveBtn btn" time="17"></button></td>
+        </tr>
+      </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        var hours = ["09", "10", "11", "12", "13", "14", "15", "16", "17"];
+        var today = moment().format("dddd, MMMM Do");
+        var hour = moment().format("HH");
+        $("#currentDay").text(today);
+
+        for (var i = 0; i < localStorage.length; i++) {
+          var textHour = localStorage.getItem(localStorage.key(i));
+          var keyHour = localStorage.key(i);
+          var lookUpTime = "[time$=" + keyHour + "]";
+          $("textarea", lookUpTime).val(textHour);
+        }
+
+        hours.forEach(element => {
+          var lookUpTime = "[time$=" + element + "]";
+          if (parseInt(element) < parseInt(hour)) {
+            $(lookUpTime).addClass("past");
+          } else if (parseInt(element) === parseInt(hour)) {
+            $(lookUpTime).addClass("present");
+          } else $(lookUpTime).addClass("future");
+        });
+
+        $("button").on("click", function() {
+          var btnTime = $(this).attr("time");
+          var lookUpTime = "[time$=" + btnTime + "]";
+          localStorage.setItem(btnTime, $("textarea", lookUpTime).val());
+        });
+      });
+    </script>
+  </body>
+</html>
